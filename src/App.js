@@ -28,6 +28,8 @@ function App() {
   const onSubmit = async (event) => {
     event.preventDefault();
 
+    if (value === '') return;
+
     const accounts = await web3.eth.getAccounts();
 
     setMessage('Waiting on transaction success...')
@@ -38,18 +40,21 @@ function App() {
     });
 
     setMessage('You have been entered!')
+
   };
 
   const onClick = async () => {
-    const accounts = await web3.eth.getAccounts();
+    if (players.length > 1) {
+      const accounts = await web3.eth.getAccounts();
 
-    setMessage('Waiting on transaction success...')
+      setMessage('Waiting on transaction success...')
 
-    await lottery.methods.pickWinner().send({
-      from: accounts[0]
-    });
+      await lottery.methods.pickWinner().send({
+        from: accounts[0]
+      });
 
-    setMessage('A winner has been picked!')
+      setMessage('A winner has been picked!')
+    }
   };
 
   return (
@@ -59,13 +64,13 @@ function App() {
       <hr />
       <form onSubmit={onSubmit}>
         <h4>Want to try your luck?</h4>
-        <label>Amount of ether to enter</label>
+        <label>Enter Amount of ether greaten than 1 to join the lottery.</label>
         <input type="text" value={value} onChange={e => setValue(e.target.value)} />
         <button type="submit">Enter</button>
       </form>
       <hr />
       <h1>{message}</h1>
-      <h1>Ready to pick a winer?</h1>
+      <h1>Ready to pick a winner?</h1>
       <button type="button" onClick={onClick}>Pick a winner!</button>
     </div>
   );
