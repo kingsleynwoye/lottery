@@ -28,7 +28,7 @@ function App() {
   const onSubmit = async (event) => {
     event.preventDefault();
 
-    if (value === '') return;
+    if (value === '' || value === '1') return;
 
     const accounts = await web3.eth.getAccounts();
 
@@ -40,11 +40,13 @@ function App() {
     });
 
     setMessage('You have been entered!')
+    setValue('')
+    setPlayers()
 
   };
 
   const onClick = async () => {
-    if (players.length > 1) {
+    if (players.length > 1 || balance.length > 1) {
       const accounts = await web3.eth.getAccounts();
 
       setMessage('Waiting on transaction success...')
